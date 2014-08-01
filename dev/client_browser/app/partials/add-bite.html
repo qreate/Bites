@@ -1,0 +1,13 @@
+<form>
+    <input type="text" ng-model="biteName" size="20" placeholder="Bite name"><br>
+    <ul><li ng-repeat="ingredient in bite.ingredients">{{ingredient.amount}} {{ingredient.measure}} {{ingredient.name}}</li></ul>
+    <input type="text" ng-model="ingredientAmount" size="10" placeholder="add amount">
+    <select ng-model="ingredientMeasure">
+        <option ng-repeat="measure in measures">{{measure.name}}</option>
+    </select>
+    <input type="text" ng-model="ingredientName" size="30" placeholder="add ingredient"><input type="button" ng-click="addIngredient()" value="add">
+    <br>
+    <textarea ng-model="biteInstructions" placeholder="add instructions"></textarea><br>
+
+    <input type="button" ng-click="save()" value="save">
+</form>

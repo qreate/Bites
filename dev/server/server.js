@@ -1,7 +1,7 @@
 var restify     =   require('restify');
 var mongojs     =   require('mongojs');
 var	morgan  	= 	require('morgan');
-var db          =   mongojs('bucketlistapp', ['appUsers','bucketLists']);
+var db          =   mongojs('bucketlistapp', ['appUsers','bucketLists','bites']);
 var server      =   restify.createServer();
 
 server.use(restify.acceptParser(server.acceptable));
@@ -23,3 +23,4 @@ server.listen(process.env.PORT || 9804, function () {
 
 var manageUsers =   require('./auth/manageUser')(server, db);
 var manageLists =   require('./list/manageList')(server, db);
+var manageBites =   require('./bites')(server, db);
