@@ -8,11 +8,27 @@
 angular.module('myApp.services', [])
 .factory('API', function ($rootScope, $http, $window) {
     var base = "http://localhost:9804";
+        $rootScope.logout = function () {
+            $rootScope.setToken("");
+            $window.location.href = '#/auth/signin';
+        };
+        $rootScope.setToken = function (token) {
+            return $window.localStorage.token = token;
+        }
+
+        $rootScope.getToken = function () {
+            return $window.localStorage.token;
+        }
+
+        $rootScope.isSessionActive = function () {
+            return $window.localStorage.token ? true : false;
+        }
     return {
         signin: function (form) {
             return $http.post(base+'/api/v1/bucketList/auth/login', form);
         },
         signup: function (form) {
+            //alert("hellu");
             return $http.post(base+'/api/v1/bucketList/auth/register', form);
         },
         getAll: function (email) {

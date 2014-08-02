@@ -3,6 +3,84 @@
 /* Controllers */
 
 angular.module('myApp.controllers', ['myApp.services'])
+    .controller('SignInCtrl', function ($rootScope, $scope, API, $window) {
+        // if the user is already logged in, take him to his bucketlist
+        if ($rootScope.isSessionActive()) {
+            //$window.location.href = ('#/bucket/list');
+        }
+
+        $scope.user = {
+            email: "",
+            password: ""
+        };
+
+        $scope.validateUser = function () {
+            var email = this.user.email;
+            var password = this.user.password;
+            if(!email || !password) {
+                //$rootScope.notify("Please enter valid credentials");
+                return false;
+            }
+            //$rootScope.show('Please wait.. Authenticating');
+            API.signin({
+                email: email,
+                password: password
+            }).success(function (data) {
+                $rootScope.setToken(email); // create a session kind of thing on the client side
+                //$rootScope.hide();
+                alert("logged in")
+                //$window.location.href = ('#/bucket/list');
+            }).error(function (error) {
+                //$rootScope.hide();
+                alert("invalid");
+                //$rootScope.notify("Invalid Username or password");
+            });
+        }
+
+    })
+
+    .controller('SignUpCtrl', function ($rootScope, $scope, API, $window) {
+        $scope.user = {
+            email: "",
+            password: "",
+            name: ""
+        };
+
+        $scope.createUser = function () {
+            var email = this.user.email;
+            var password = this.user.password;
+            var uName = this.user.name;
+            if(!email || !password || !uName) {
+                //$rootScope.notify("Please enter valid data");
+                alert('hooo');
+                return false;
+            }
+            //$rootScope.show('Please wait.. Registering');
+            API.signup({
+                email: email,
+                password: password,
+                name: uName
+            }).success(function (data) {
+                $rootScope.setToken(email); // create a session kind of thing on the client side
+                //$rootScope.hide();
+                alert('success');
+                //$window.location.href = ('#/bucket/list');
+            }).error(function (error) {
+                //$rootScope.hide();
+                if(error.error && error.error.code == 11000)
+                {
+                    alert('hooo1');
+                    //$rootScope.notify("A user with this email already exists");
+                }
+                else
+                {
+                    alert('hoo2');
+                    //$rootScope.notify("Oops something went wrong, Please try again!");
+                }
+
+            });
+        }
+    })
   .controller('MyCtrl1', ['$scope','API', function($scope, API, $timeout, $window, bite, ingredients, measures, save) {
         $scope.bite ={};
         $scope.bite.ingredients = [];
@@ -55,6 +133,12 @@ angular.module('myApp.controllers', ['myApp.services'])
         $scope.navigation = [{
             name:"Login",
             hash:"login"
+        },{
+            name:"Sign up",
+            hash:"signup"
+        },{
+            name:"Sign in",
+            hash:"signin"
         },{
             name:"Add Bite",
             hash:"view1"

@@ -4,6 +4,11 @@ var	morgan  	= 	require('morgan');
 var db          =   mongojs('bucketlistapp', ['appUsers','bucketLists','bites']);
 var server      =   restify.createServer();
 
+// Authentication
+var passport        = require('passport');
+var LocalStrategy   = require('passport-local').Strategy;
+var sessions        = require("client-sessions");
+
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
